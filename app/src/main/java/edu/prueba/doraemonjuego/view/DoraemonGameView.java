@@ -40,13 +40,18 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
 
 
         Canvas c = holder.lockCanvas();
-        holder.unlockCanvasAndPost(c);
+
+        if (c != null) {
+            controller.model.initializeValues(c);
+            holder.unlockCanvasAndPost(c);
+        }
+       /* holder.unlockCanvasAndPost(c);
 
         controller.model.initializeValues(context, c);
 
 
 
-        setFocusable(true);
+        setFocusable(true);*/
         //controller.start();
     }
 

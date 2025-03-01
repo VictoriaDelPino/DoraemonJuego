@@ -5,15 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import edu.prueba.doraemonjuego.R;
 import edu.prueba.doraemonjuego.controller.DoraemonGameController;
@@ -34,10 +25,12 @@ public class DoraemonGameModel  {
 
     public DoraemonGameController bucle;
 
-    public DoraemonGameModel() {
+    private Context context;
 
+    public DoraemonGameModel(Context context) {
+        this.context = context;
     }
-    public void initializeValues(Context context,Canvas c){
+    public void initializeValues(Canvas c){
 
         maxX = c.getWidth();
         maxY = c.getHeight();

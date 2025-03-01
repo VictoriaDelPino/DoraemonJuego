@@ -24,13 +24,13 @@ public class JuegoActivity extends AppCompatActivity {
 
         controller = new DoraemonGameController(this);
 
-
-
-        setContentView(controller.view);
-        hideSystemUI();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        controller.start();
+// Aseguramos que el view ya ha sido inicializado antes de usarlo
+        if (controller.view != null) {
+            setContentView(controller.view);
+            hideSystemUI();
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            controller.start();
+        }
     }
 
     private  void hideSystemUI(){

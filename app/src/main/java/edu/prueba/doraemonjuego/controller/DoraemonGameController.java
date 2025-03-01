@@ -21,7 +21,7 @@ public class DoraemonGameController extends Thread {
     public final static int TIEMPO_FRAME = 1000 / MAX_FRAMES;
 
     public DoraemonGameController(Context context) {
-        model= new DoraemonGameModel();
+        model= new DoraemonGameModel(context);
         view= new DoraemonGameView(context, this);
 
 
@@ -54,7 +54,7 @@ public class DoraemonGameController extends Thread {
                         } catch (InterruptedException e) {
                         }
                     }
-                    while (tiempoDormir < 0 && framesASaltar > MAX_FRAMES_SALTADOS) {
+                    while (tiempoDormir < 0 && framesASaltar < MAX_FRAMES_SALTADOS) {
                         view.actualizar();
                         tiempoDormir += TIEMPO_FRAME;
                         framesASaltar++;
