@@ -45,14 +45,7 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
             controller.model.initializeValues(c);
             holder.unlockCanvasAndPost(c);
         }
-       /* holder.unlockCanvasAndPost(c);
 
-        controller.model.initializeValues(context, c);
-
-
-
-        setFocusable(true);*/
-        //controller.start();
     }
 
     public void actualizar() {
@@ -76,6 +69,10 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
             // Dibujar dos imágenes seguidas para un scroll fluido
             canvas.drawBitmap(controller.model.mapa, 0, controller.model.pos_mapa_y, null);
             canvas.drawBitmap(controller.model.mapa, 0, controller.model.pos_mapa_y - controller.model.mapa_h, null);
+
+            // Dibujar la imagen del suelo manteniendo proporciones
+            int suelo_y = controller.model.maxY - controller.model.suelo.getHeight(); // Asegurar que esté en la parte inferior
+            canvas.drawBitmap(controller.model.suelo, 0, suelo_y, null);
 
             // Mostrar FPS
             mypaint.setTextSize(40);

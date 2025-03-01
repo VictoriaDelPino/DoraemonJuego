@@ -13,6 +13,7 @@ public class DoraemonGameModel  {
 
     public int maxX, maxY;
     public Bitmap mapa;
+    public Bitmap suelo;
     public int mapa_h, mapa_w, dest_mapa_y;
 
 
@@ -46,6 +47,15 @@ public class DoraemonGameModel  {
 
         dest_mapa_y = (maxY - mapa_h) / 2;
         pos_mapa_y = 0;  // Inicializa en la parte superior
+
+        // Cargar suelo y mantener proporciones
+        suelo = BitmapFactory.decodeResource(context.getResources(), R.drawable.suelo);
+
+        // Escalar manteniendo la proporción
+        float escalaSuelo = (float) maxX / suelo.getWidth();
+        int suelo_h = (int) (suelo.getHeight() * escalaSuelo);  // Ajustar altura proporcional
+
+        suelo = Bitmap.createScaledBitmap(suelo, maxX, suelo_h, true);
     }
 
     public float getEscala(){
