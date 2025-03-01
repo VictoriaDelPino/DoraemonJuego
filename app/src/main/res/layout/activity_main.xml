@@ -13,14 +13,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.35"
+        android:layout_weight="0.50"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.65"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/logo" />
     </LinearLayout>
 
@@ -28,7 +29,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.65"
+        android:layout_weight="0.50"
         android:orientation="vertical"
         android:paddingLeft="50dp"
         android:paddingRight="50dp">
@@ -36,27 +37,33 @@
         <ImageButton
             android:id="@+id/imgBtnNivel1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
             android:scaleType="fitCenter"
             android:src="@drawable/boton_nivel1" />
 
         <ImageButton
             android:id="@+id/imgBtnNivel2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
             android:scaleType="fitCenter"
             android:src="@drawable/boton_nivel2" />
 
         <ImageButton
             android:id="@+id/imgBtnNivel3"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
             android:scaleType="fitCenter"
             android:src="@drawable/boton_nivel3" />
     </LinearLayout>
