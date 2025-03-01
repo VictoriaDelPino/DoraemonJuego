@@ -1,4 +1,4 @@
-package edu.prueba.doraemonjuego.view;
+package edu.prueba.doraemonjuego;
 
 import android.content.pm.ActivityInfo;
 import android.os.Build;
@@ -7,22 +7,35 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.prueba.doraemonjuego.controller.DoraemonGameController;
+import edu.prueba.doraemonjuego.model.DoraemonGameModel;
+import edu.prueba.doraemonjuego.view.DoraemonGameView;
+
 public class JuegoActivity extends AppCompatActivity {
 
-    DoraemonJuego dj;
+
+    DoraemonGameController controller;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dj= new DoraemonJuego(this);
-        setContentView(dj);
+
+        controller = new DoraemonGameController(this);
+
+
+
+        setContentView(controller.view);
         hideSystemUI();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        controller.start();
     }
 
     private  void hideSystemUI(){
         if(Build.VERSION.SDK_INT>Build.VERSION_CODES.HONEYCOMB){
-            dj.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE //diseño estable sin cambio al ocultar la barras
+            controller.view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE //diseño estable sin cambio al ocultar la barras
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION //permite que la aplicacion de dibuje detras de la barra de navegacion
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN // que se dibuje detras de la barra de estado
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar (botones virtuales)
@@ -30,7 +43,7 @@ public class JuegoActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY); //matiene el modo inmersivo incluso si el usuario toca la pantalla
             // cuando se presiona volumen, por ej, se cambia la visibilidad, hay que volver
             // a ocultar
-            dj.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            controller.view.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
                 @Override
                 public void onSystemUiVisibilityChange(int visibility) {
                     hideSystemUI();

@@ -1,4 +1,4 @@
-package edu.prueba.doraemonjuego.view;
+package edu.prueba.doraemonjuego;
 
 import android.content.Intent;
 import android.os.Bundle;

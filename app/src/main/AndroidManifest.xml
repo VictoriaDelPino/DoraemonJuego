@@ -13,10 +13,10 @@
         android:theme="@style/Theme.DoraemonJuego"
         tools:targetApi="31">
         <activity
-            android:name=".view.JuegoActivity"
+            android:name=".JuegoActivity"
             android:exported="false" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
