@@ -3,24 +3,29 @@ package edu.prueba.doraemonjuego.controller;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import edu.prueba.doraemonjuego.model.DoraemonJuego;
+import edu.prueba.doraemonjuego.model.DoraemonGameModel;
+import edu.prueba.doraemonjuego.view.DoraemonGameView;
 
-public class BucleJuego extends Thread {
+public class DoraemonGameController extends Thread {
 
-    private DoraemonJuego juego;
-    private SurfaceHolder surfaceHolder;
+    public DoraemonGameModel model;
+    public DoraemonGameView view;
     private boolean JuegoEnEjecucion = true;
     public final static int MAX_FRAMES = 30;
     public final static int MAX_FRAMES_SALTADOS = 5;
     public final static int TIEMPO_FRAME = 1000 / MAX_FRAMES;
 
-    public BucleJuego(SurfaceHolder sh, DoraemonJuego s) {
-        juego = s;
-        surfaceHolder = sh;
+    public DoraemonGameController(Context context, int nivel) {
+        model= new DoraemonGameModel(context, nivel);
+        view= new DoraemonGameView(context, this);
+
+
+
     }
 
     @SuppressLint("RestrictedApi")
@@ -31,15 +36,16 @@ public class BucleJuego extends Thread {
         long tiempoDiferencia;
         int tiempoDormir;
         int framesASaltar;
+
         while (JuegoEnEjecucion) {
             canvas = null;
             try {
-                canvas = this.surfaceHolder.lockCanvas();
-                synchronized (surfaceHolder) {
+                canvas = view.holder.lockCanvas();
+                synchronized (view.holder) {
                     tiempoComienzo = System.currentTimeMillis();
                     framesASaltar = 0;
-                    juego.actualizar();
-                    juego.renderizar(canvas);
+                    view.actualizar();
+                    view.renderizar(canvas);
                     tiempoDiferencia = System.currentTimeMillis() - tiempoComienzo;
                     tiempoDormir = (int) (TIEMPO_FRAME - tiempoDiferencia);
                     if (tiempoDormir > 0) {
@@ -48,15 +54,15 @@ public class BucleJuego extends Thread {
                         } catch (InterruptedException e) {
                         }
                     }
-                    while (tiempoDormir < 0 && framesASaltar > MAX_FRAMES_SALTADOS) {
-                        juego.actualizar();
+                    while (tiempoDormir < 0 && framesASaltar < MAX_FRAMES_SALTADOS) {
+                        view.actualizar();
                         tiempoDormir += TIEMPO_FRAME;
                         framesASaltar++;
                     }
                 }
             } finally {
                 if (canvas != null) {
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+                    view.holder.unlockCanvasAndPost(canvas);
                 }
             }
         }
