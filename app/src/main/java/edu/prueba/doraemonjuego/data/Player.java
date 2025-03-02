@@ -1,6 +1,9 @@
 package edu.prueba.doraemonjuego.data;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+
+
 
 public class Player {
     private float x;
@@ -13,92 +16,84 @@ public class Player {
     private Bitmap[] left;
     private Bitmap[] right;
     private int actualBitmapIndex;
-
+    private boolean isMoving = false;
+    private int direction = 0; // -1 = izquierda, 1 = derecha, 0 = detenido
+    private float velocityX = 20; // Velocidad de movimiento constante
 
     public Player(int height, int width, float x, float y) {
         this.height = height;
         this.width = width;
         this.x = x;
         this.y = y;
-        score=0;
-        left= (Bitmap[]) GamePersistance.playerMovements.get("l");
-        right= (Bitmap[]) GamePersistance.playerMovements.get("r");
-        actualBitmap=right[0];
-        lifes=3;
-        actualBitmapIndex=0;
-
+        score = 0;
+        left = (Bitmap[]) GamePersistance.playerMovements.get("l");
+        right = (Bitmap[]) GamePersistance.playerMovements.get("r");
+        actualBitmap = right[0];
+        lifes = 3;
+        actualBitmapIndex = 0;
     }
 
-
-    public void removeLife(){
-        if(lifes>0) lifes--;
-    }
-    public void addLife(){
-        if(lifes<3) lifes++;
-        else score+=100;
+    public void draw(Canvas canvas) {
+        canvas.drawBitmap(actualBitmap, x, y, null);
     }
 
-    public void addPoints(){
-        score+=10;
-    }
-
-    public void moveLeft(){
-        if (x<=10) x=10;
-        else x--;
-        if(isDirectionRight()) actualBitmap=left[0];
-        else {
-            actualBitmapIndex++;
-            if(actualBitmapIndex>=left.length) actualBitmapIndex=0;
-            actualBitmap=left[actualBitmapIndex];
+    public void update(int maxX) {
+        if (isMoving) {
+            if (direction == -1) moveLeft();
+            else if (direction == 1) moveRight(maxX);
         }
     }
 
-    public void moveRight(int maxX){
-        if (x>= maxX-10) x=maxX-10;
-        else x++;
-        if(!isDirectionRight()) actualBitmap=right[0];
-        else {
-            actualBitmapIndex++;
-            if(actualBitmapIndex>=right.length) actualBitmapIndex=0;
-            actualBitmap=right[actualBitmapIndex];
-        }
+    public void moveLeft() {
+        isMoving = true;
+        direction = -1;
+        x = Math.max(-50, x - velocityX);
+        actualizarBitmap(left);
     }
 
-    private boolean isDirectionRight(){
-        boolean isRight=false;
-        for (Bitmap b: right) {
-            if(actualBitmap==b) isRight=true;
-
-        }
-        return isRight;
+    public void moveRight(int maxX) {
+        isMoving = true;
+        direction = 1;
+        x = Math.min(maxX - 350, x + velocityX);
+        actualizarBitmap(right);
     }
 
-    public int getHeight() {
-        return height;
+    public void stopMoving() {
+        isMoving = false;
+        direction = 0;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    private void actualizarBitmap(Bitmap[] bitmaps) {
+        actualBitmapIndex = (actualBitmapIndex + 1) % bitmaps.length;
+        actualBitmap = bitmaps[actualBitmapIndex];
     }
 
-    public int getWidth() {
-        return width;
+    public void removeLife() {
+        if (lifes > 0) lifes--;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void addLife() {
+        if (lifes < 3) lifes++;
+        else score += 100;
+    }
+
+    public void addPoints() {
+        score += 10;
+    }
+
+    public int getLifes() {
+        return lifes;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public float getX() {
         return x;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
     public float getY() {
         return y;
     }
-
 }

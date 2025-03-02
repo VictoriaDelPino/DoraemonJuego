@@ -1,6 +1,7 @@
 package edu.prueba.doraemonjuego.data;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 public class Point {
 
@@ -18,8 +19,12 @@ public class Point {
         bitmap=GamePersistance.point;
     }
 
+    public void draw(Canvas canvas){
+        canvas.drawBitmap(bitmap, x, y, null);
+    }
+
     public void moveDown(Float multiplier) throws Throwable {
-        y-=0.1*multiplier;
+        y+=0.1*multiplier;
         if(y<0) autoDestroy();
     }
 

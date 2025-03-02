@@ -1,6 +1,8 @@
 package edu.prueba.doraemonjuego.data;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.util.Log;
 
 public class Enemy {
 
@@ -18,8 +20,13 @@ public class Enemy {
         bitmap=GamePersistance.enemy;
     }
 
+    public void draw(Canvas canvas){
+        canvas.drawBitmap(bitmap, x, y, null);
+        Log.d("Instanciar_entidad", "Pintado enemigo");
+    }
+
     public void moveDown(Float multiplier) throws Throwable {
-        y-=0.1*multiplier;
+        y+=0.1*multiplier;
         if(y<0) autoDestroy();
     }
 

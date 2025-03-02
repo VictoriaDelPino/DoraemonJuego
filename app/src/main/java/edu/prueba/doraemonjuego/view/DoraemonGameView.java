@@ -61,8 +61,10 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
     }
 
 
-    public void renderizar(Canvas canvas) {
+    public void renderizar(Canvas canvas, DoraemonGameModel model) {
         if (canvas != null) {
+
+
             Paint mypaint = new Paint();
             canvas.drawColor(Color.RED);
 
@@ -73,7 +75,15 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
             // Dibujar la imagen del suelo manteniendo proporciones
             int suelo_y = controller.model.maxY - controller.model.suelo.getHeight(); // Asegurar que esté en la parte inferior
             canvas.drawBitmap(controller.model.suelo, 0, suelo_y, null);
+            model.gameInstance.player.draw(canvas);
 
+            for (int i = 0; i < controller.model.gameInstance.enemies.size(); i++) {
+                controller.model.gameInstance.enemies.get(i).draw(canvas);
+            }
+
+            for (int i = 0; i < controller.model.gameInstance.points.size(); i++) {
+                controller.model.gameInstance.points.get(i).draw(canvas);
+            }
             // Mostrar FPS
             mypaint.setTextSize(40);
             canvas.drawText("Frames ejecutados: " + controller.model.contadorFrames,
