@@ -20,9 +20,9 @@ public class JuegoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int nivel = getIntent().getIntExtra("nivel", 1);
 
-
-        controller = new DoraemonGameController(this);
+        controller = new DoraemonGameController(this, nivel);
 
 // Aseguramos que el view ya ha sido inicializado antes de usarlo
         if (controller.view != null) {

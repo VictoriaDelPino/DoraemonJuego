@@ -48,8 +48,21 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(() -> AnimarBoton(imgBtnNivel3), 3500);
 
 
-        imgBtnNivel1.setOnClickListener(v->{
-            Intent i= new Intent(getApplicationContext(),JuegoActivity.class);
+        imgBtnNivel1.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), JuegoActivity.class);
+            i.putExtra("nivel", 1); // Enviar el valor 1
+            startActivity(i);
+        });
+
+        imgBtnNivel2.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), JuegoActivity.class);
+            i.putExtra("nivel", 2); // Enviar el valor 2
+            startActivity(i);
+        });
+
+        imgBtnNivel3.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), JuegoActivity.class);
+            i.putExtra("nivel", 3); // Enviar el valor 3
             startActivity(i);
         });
     }

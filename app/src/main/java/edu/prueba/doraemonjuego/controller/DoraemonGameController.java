@@ -20,8 +20,8 @@ public class DoraemonGameController extends Thread {
     public final static int MAX_FRAMES_SALTADOS = 5;
     public final static int TIEMPO_FRAME = 1000 / MAX_FRAMES;
 
-    public DoraemonGameController(Context context) {
-        model= new DoraemonGameModel(context);
+    public DoraemonGameController(Context context, int nivel) {
+        model= new DoraemonGameModel(context, nivel);
         view= new DoraemonGameView(context, this);
 
 

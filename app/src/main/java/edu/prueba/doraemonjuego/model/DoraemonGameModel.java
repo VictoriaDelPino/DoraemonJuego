@@ -16,9 +16,10 @@ public class DoraemonGameModel  {
     public Bitmap suelo;
     public int mapa_h, mapa_w, dest_mapa_y;
 
+    public int nivel;
 
     public float pos_mapa_y;  // Nueva posición para el movimiento vertical
-    public float velocidadMapa = 50; // Velocidad del movimiento
+    public float velocidadMapa = 10; // Velocidad del movimiento
 
     public int contadorFrames = 0;
     public static final int textoInicialx = 50;
@@ -28,8 +29,10 @@ public class DoraemonGameModel  {
 
     private Context context;
 
-    public DoraemonGameModel(Context context) {
+    public DoraemonGameModel(Context context, int nivel) {
         this.context = context;
+        this.nivel = nivel;
+        velocidadMapa= nivel*velocidadMapa;
     }
     public void initializeValues(Canvas c){
 
