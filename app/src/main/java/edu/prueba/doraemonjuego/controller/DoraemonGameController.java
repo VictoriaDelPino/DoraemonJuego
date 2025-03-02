@@ -26,12 +26,21 @@ public class DoraemonGameController extends Thread {
     public final static int MAX_FRAMES_SALTADOS = 5;
     public final static int TIEMPO_FRAME = 1000 / MAX_FRAMES;
     Context context;
+    private int divider;
 
 
     public DoraemonGameController(Context context, int nivel) {
         this.context = context;
         model= new DoraemonGameModel(context, nivel);
         view= new DoraemonGameView(context, this);
+        if (nivel==1){
+            divider=100;
+        }else if (nivel==2){
+            divider=75;
+        }else if (nivel==3){
+            divider=35;
+        }
+
 
     }
 
@@ -51,7 +60,7 @@ public class DoraemonGameController extends Thread {
 
                 canvas = view.holder.lockCanvas();
                 if(canvas != null){
-                    if(model.contadorFrames%100==0){
+                    if(model.contadorFrames%divider==0){
                         model.instantiateEntities();
                     }
                 }

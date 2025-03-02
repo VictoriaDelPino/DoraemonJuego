@@ -38,6 +38,6 @@ public class GamePersistance {
 
         background= BitmapFactory.decodeResource(context.getResources(), R.drawable.cielo );
         ground= BitmapFactory.decodeResource(context.getResources(), R.drawable.suelo );
-            life= BitmapFactory.decodeResource(context.getResources(), R.drawable.dorayaki );
+            life= BitmapFactory.decodeResource(context.getResources(), R.drawable.vida );
     }
 }

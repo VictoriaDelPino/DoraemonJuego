@@ -77,6 +77,9 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
             canvas.drawBitmap(controller.model.suelo, 0, suelo_y, null);
             model.gameInstance.player.draw(canvas);
 
+            canvas.drawBitmap(controller.model.vida, 0, 0, null);
+            canvas.drawBitmap(controller.model.puntos, controller.model.maxX-240, 0, null);
+
             for (int i = 0; i < controller.model.gameInstance.enemies.size(); i++) {
                 controller.model.gameInstance.enemies.get(i).draw(canvas);
             }
@@ -85,9 +88,32 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
                 controller.model.gameInstance.points.get(i).draw(canvas);
             }
             // Mostrar FPS
-            mypaint.setTextSize(40);
+            mypaint.setTextSize(60);
+            mypaint.setStyle(Paint.Style.FILL);
+            mypaint.setColor(Color.BLACK); // Color principal del texto
+            mypaint.setAntiAlias(true);
+
+// Pintar el borde blanco
+            Paint borderPaint = new Paint(mypaint);
+            borderPaint.setStyle(Paint.Style.STROKE);
+            borderPaint.setStrokeWidth(8); // Grosor del borde
+            borderPaint.setColor(Color.WHITE); // Color del borde
+            // Dibujar el texto con borde blanco
+            canvas.drawText("X" + controller.model.gameInstance.player.getLifes(),
+                    controller.model.textoInicialx+50, controller.model.textoInicialy + 50, borderPaint);
+            canvas.drawText("X" + controller.model.gameInstance.player.getLifes(),
+                    controller.model.textoInicialx+50, controller.model.textoInicialy + 50, mypaint);
+
+            canvas.drawText("X" + controller.model.gameInstance.player.getScore(),
+                    controller.model.maxX-140, controller.model.textoInicialy +50, borderPaint);
+            canvas.drawText("X" + controller.model.gameInstance.player.getScore(),
+                    controller.model.maxX-140, controller.model.textoInicialy +50, mypaint);
+
+// Mostrar FPS con borde
             canvas.drawText("Frames ejecutados: " + controller.model.contadorFrames,
-                    controller.model.textoInicialx, controller.model.textoInicialy + 40, mypaint);
+                    controller.model.textoInicialx, controller.model.textoInicialy + 150, borderPaint);
+            canvas.drawText("Frames ejecutados: " + controller.model.contadorFrames,
+                    controller.model.textoInicialx, controller.model.textoInicialy + 150, mypaint);
         }
     }
 
