@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+
         imgLogo=findViewById(R.id.imageView);
         imgBtnNivel1 =findViewById(R.id.imgBtnNivel1);
         imgBtnNivel2 =findViewById(R.id.imgBtnNivel2);
