@@ -58,7 +58,6 @@ public class JuegoActivity extends AppCompatActivity {
                 }
             });
 
-
             controller.view.setOnTouchListener((v, event) -> {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
@@ -81,8 +80,6 @@ public class JuegoActivity extends AppCompatActivity {
                 return false;
             });
         }
-
-
     }
 
 

@@ -37,12 +37,29 @@ public class DoraemonGameModel  {
 
     public GameInstance gameInstance;
 
+    private boolean JuegoEnEjecucion = true;
+    private boolean juegoGanado=false;
+
+    public DoraemonGameController getBucle() {
+        return bucle;
+    }
+
+    public boolean isJuegoEnEjecucion() {
+        return JuegoEnEjecucion;
+    }
+
+    public boolean isJuegoGanado() {
+        return juegoGanado;
+    }
 
     public DoraemonGameController bucle;
 
     private Context context;
 
     private float multiplier = 100f;
+    public static int MAX_PT_LVL1=10;
+    public static int MAX_PT_LVL2=150;
+    public static int MAX_PT_LVL3=200;
 
     public DoraemonGameModel(Context context, int nivel) {
         this.context = context;
@@ -74,17 +91,38 @@ public class DoraemonGameModel  {
 
     }
 
+    public void checkGame(){
+
+        Log.d("checkGame",DoraemonGameModel.MAX_PT_LVL1+" | "+nivel+" | "+gameInstance.player.getScore() );
+        if(gameInstance.player.getLifes()<=0){
+            JuegoEnEjecucion=false;
+            juegoGanado=false;
+        }else {
+            if (gameInstance.player.getScore() >= DoraemonGameModel.MAX_PT_LVL1 && nivel == 1) {
+                Log.d("checkGame", "1");
+                JuegoEnEjecucion = false;
+                juegoGanado = true;
+            } else if (gameInstance.player.getScore() >= DoraemonGameModel.MAX_PT_LVL2 && nivel == 2) {
+                Log.d("checkGame", "2");
+                JuegoEnEjecucion = false;
+                juegoGanado = true;
+            } else if (gameInstance.player.getScore() >= DoraemonGameModel.MAX_PT_LVL3 && nivel == 3) {
+                Log.d("checkGame", "3");
+                JuegoEnEjecucion = false;
+                juegoGanado = true;
+            }
+
+        }
+    }
+
     public void updatePositions() {
         // Mover enemigos y verificar colisiones
         for (int i = 0; i < gameInstance.enemies.size(); i++) {
             Enemy enemy = gameInstance.enemies.get(i);
             try {
                 enemy.moveDown(multiplier);
-                if (checkCollision(gameInstance.player, enemy)) {
-                    multiplier+=10;
-                    enemy.collide(gameInstance.player);
+                if(enemy.collide(gameInstance.player)){
                     gameInstance.enemies.remove(i);
-                    i--; // Ajustar índice tras eliminación
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -96,11 +134,8 @@ public class DoraemonGameModel  {
             Point point = gameInstance.points.get(i);
             try {
                 point.moveDown(multiplier);
-                if (checkCollision(gameInstance.player, point)) {
-                    multiplier+=10;
-                    point.collide(gameInstance.player);
+                if(point.collide(gameInstance.player)){
                     gameInstance.points.remove(i);
-                    i--; // Ajustar índice tras eliminación
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -111,11 +146,8 @@ public class DoraemonGameModel  {
             PowerUp powerUp = gameInstance.lifes.get(i);
             try {
                 powerUp.moveDown(multiplier);
-                if (checkCollision(gameInstance.player, powerUp)) {
-                    multiplier+=10;
-                    powerUp.collide(gameInstance.player);
+                if(powerUp.collide(gameInstance.player)){
                     gameInstance.lifes.remove(i);
-                    i--; // Ajustar índice tras eliminación
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -124,27 +156,7 @@ public class DoraemonGameModel  {
         }
     }
 
-    private boolean checkCollision(Player player, PowerUp powerUp) {
-        return player.getX() < powerUp.getX() + powerUp.getWidth() &&
-                player.getX() + 350 > powerUp.getX() &&
-                player.getY() < powerUp.getY() + powerUp.getHeight() &&
-                player.getY() + 300 > powerUp.getY();
-    }
 
-    // Método para verificar colisiones
-    private boolean checkCollision(Player player, Enemy enemy) {
-        return player.getX() < enemy.getX() + enemy.getWidth() &&
-                player.getX() + 350 > enemy.getX() &&
-                player.getY() < enemy.getY() + enemy.getHeight() &&
-                player.getY() + 300 > enemy.getY();
-    }
-
-    private boolean checkCollision(Player player, Point point) {
-        return player.getX() < point.getX() + point.getWidth() &&
-                player.getX() + 350 > point.getX() &&
-                player.getY() < point.getY() + point.getHeight() &&
-                player.getY() + 300 > point.getY();
-    }
 
 
     public void instantiateEntities(){
@@ -153,22 +165,22 @@ public class DoraemonGameModel  {
         int randomPowerUps = (int) (Math.random() * 11);
         if(randomPoints%2==0){
             if(gameInstance.points.size()<maxPoints){
-                int posX = (int) (Math.random() * (maxX - 160)); // Corrección aquí
-                gameInstance.points.add(new Point(2, 2, posX, maxY-2500));
+                int posX = (int) (Math.random() * (maxX - 250)); // Corrección aquí
+                gameInstance.points.add(new Point(200, 250, posX, -250));
                 Log.d("Instanciar_entidad", "Instanciado punto");
             }
         }
         if (randomEnemies % 2 == 0) {
             if (gameInstance.enemies.size() < maxEnemies) {
-                int posX = (int) (Math.random() * (maxX - 126)); // Corrección aquí
-                gameInstance.enemies.add(new Enemy(2, 2, posX, maxY - 2500));
+                int posX = (int) (Math.random() * (maxX - 110)); // Corrección aquí
+                gameInstance.enemies.add(new Enemy(110, 110, posX, -250));
                 Log.d("Instanciar_entidad", "Instanciado enemigo en X: " + posX);
             }
         }
         if(randomPowerUps%10==0){
             if(gameInstance.lifes.size()<maxPowerUps){
-                int posX = (int) (Math.random() * (maxX - 160)); // Corrección aquí
-                gameInstance.lifes.add(new PowerUp(2, 2, posX, maxY-2500));
+                int posX = (int) (Math.random() * (maxX - 250)); // Corrección aquí
+                gameInstance.lifes.add(new PowerUp(225, 250, posX, -250));
 
             }
 

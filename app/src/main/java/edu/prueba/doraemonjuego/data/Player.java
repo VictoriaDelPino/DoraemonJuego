@@ -2,7 +2,10 @@ package edu.prueba.doraemonjuego.data;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 
 
 public class Player {
@@ -35,6 +38,7 @@ public class Player {
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(actualBitmap, x, y, null);
+
     }
 
     public void update(int maxX) {
@@ -95,5 +99,21 @@ public class Player {
 
     public float getY() {
         return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

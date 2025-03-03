@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <ImageView
-        android:id="@+id/imgVictoria"
+        android:id="@+id/imgGameOver"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -25,14 +24,14 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imgBtnInicio"
+                android:id="@+id/imgBtnInicio_GameOver"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@android:drawable/ic_menu_revert" />
 
             <ImageButton
-                android:id="@+id/imgBtnSigNivel"
+                android:id="@+id/imgBtnTryAgain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -40,5 +39,6 @@
 
         </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>

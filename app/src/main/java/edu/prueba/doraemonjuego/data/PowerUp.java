@@ -2,6 +2,10 @@ package edu.prueba.doraemonjuego.data;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.util.Log;
 
 public class PowerUp {
@@ -21,7 +25,8 @@ public class PowerUp {
         bitmap=GamePersistance.life;
     }
 
-        public void draw(Canvas canvas){
+    public void draw(Canvas canvas){
+
         canvas.drawBitmap(bitmap, x, y, null);
         Log.d("Instanciar_entidad", "Pintado powerUp");
     }
@@ -32,9 +37,26 @@ public class PowerUp {
     }
 
 
-        public void collide(Player player) throws Throwable {
-        player.addLife();
-        autoDestroy();
+        public boolean collide(Player player) throws Throwable {
+            float playerL, playerR, playerT, playerB;
+            float otherL, otherR, otherT, otherB;
+            playerL = player.getX();
+            playerR = player.getX() + player.getWidth();
+            playerT = player.getY();
+            playerB = player.getY() + player.getHeight();
+            otherL = x;
+            otherR = x + width;
+            otherT = y;
+            otherB = y + height;
+
+
+            boolean isCollide = !(otherT > playerB || otherB < playerT || otherL > playerR || otherR < playerL);
+
+            if( isCollide){
+                player.addLife();
+                autoDestroy();
+            }
+            return isCollide;
     }
 
         public void autoDestroy() throws Throwable {

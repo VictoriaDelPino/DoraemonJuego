@@ -1,6 +1,7 @@
 package edu.prueba.doraemonjuego.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,6 +15,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.prueba.doraemonjuego.FinalScreenActivity;
 import edu.prueba.doraemonjuego.R;
 import edu.prueba.doraemonjuego.controller.DoraemonGameController;
 import edu.prueba.doraemonjuego.model.DoraemonGameModel;
@@ -120,6 +122,13 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
             canvas.drawText("Frames ejecutados: " + controller.model.contadorFrames,
                     controller.model.textoInicialx, controller.model.textoInicialy + 150, mypaint);
         }
+    }
+
+    public void printFinalScreen(Context context, boolean isWin){
+        Intent intent = new Intent(context, FinalScreenActivity.class);
+        intent.putExtra("isWin", isWin);
+        intent.putExtra("level", controller.model.nivel);
+        context.startActivity(intent);
     }
 
     @Override

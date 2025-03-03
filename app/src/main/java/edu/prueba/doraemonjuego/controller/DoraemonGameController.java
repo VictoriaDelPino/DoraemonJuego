@@ -22,7 +22,7 @@ public class DoraemonGameController extends Thread {
 
     public DoraemonGameModel model;
     public DoraemonGameView view;
-    private boolean JuegoEnEjecucion = true;
+
     public final static int MAX_FRAMES = 30;
     public final static int MAX_FRAMES_SALTADOS = 5;
     public final static int TIEMPO_FRAME = 1000 / MAX_FRAMES;
@@ -41,7 +41,7 @@ public class DoraemonGameController extends Thread {
         }else if (nivel==3){
             divider=35;
         }
-
+//inicializar musica
 
     }
 
@@ -55,7 +55,7 @@ public class DoraemonGameController extends Thread {
         int framesASaltar;
 
 
-        while (JuegoEnEjecucion) {
+        while (model.isJuegoEnEjecucion()) {
             canvas = null;
             try {
 
@@ -93,10 +93,14 @@ public class DoraemonGameController extends Thread {
                     view.holder.unlockCanvasAndPost(canvas);
                 }
             }
+            model.checkGame();
         }
-        Log.d(TAG, "nueva iteracion");
-    }
-
-    public void fin(){
+        if(model.isJuegoGanado()){
+            //para musica
+            view.printFinalScreen(context, true);
+        }else{
+            //para musica
+            view.printFinalScreen(context, false);
+        }
     }
 }
