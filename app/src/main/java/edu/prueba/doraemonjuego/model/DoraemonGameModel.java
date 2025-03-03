@@ -14,6 +14,7 @@ import edu.prueba.doraemonjuego.data.GameInstance;
 import edu.prueba.doraemonjuego.data.GamePersistance;
 import edu.prueba.doraemonjuego.data.Player;
 import edu.prueba.doraemonjuego.data.Point;
+import edu.prueba.doraemonjuego.data.PowerUp;
 
 public class DoraemonGameModel  {
 
@@ -26,7 +27,7 @@ public class DoraemonGameModel  {
 
     public int nivel;
 
-    public int maxEnemies, maxPoints;
+    public int maxEnemies, maxPoints,maxPowerUps;
     public float pos_mapa_y;  // Nueva posición para el movimiento vertical
     public float velocidadMapa; // Velocidad del movimiento
 
@@ -54,14 +55,17 @@ public class DoraemonGameModel  {
             multiplier = 100f;
             maxEnemies = 20;
             maxPoints = 30;
+            maxPowerUps = 5;
         }else if(nivel==2){
             multiplier = 150f;
             maxEnemies = 40;
             maxPoints = 40;
+            maxPowerUps = 4;
         }else if(nivel==3){
             multiplier = 200f;
             maxEnemies = 60;
             maxPoints = 50;
+            maxPowerUps = 3;
         }else{
             multiplier = 100f;
             maxEnemies = 20;
@@ -77,6 +81,7 @@ public class DoraemonGameModel  {
             try {
                 enemy.moveDown(multiplier);
                 if (checkCollision(gameInstance.player, enemy)) {
+                    multiplier+=10;
                     enemy.collide(gameInstance.player);
                     gameInstance.enemies.remove(i);
                     i--; // Ajustar índice tras eliminación
@@ -92,6 +97,7 @@ public class DoraemonGameModel  {
             try {
                 point.moveDown(multiplier);
                 if (checkCollision(gameInstance.player, point)) {
+                    multiplier+=10;
                     point.collide(gameInstance.player);
                     gameInstance.points.remove(i);
                     i--; // Ajustar índice tras eliminación
@@ -100,6 +106,29 @@ public class DoraemonGameModel  {
                 e.printStackTrace();
             }
         }
+
+        for(int i = 0; i < gameInstance.lifes.size(); i++) {
+            PowerUp powerUp = gameInstance.lifes.get(i);
+            try {
+                powerUp.moveDown(multiplier);
+                if (checkCollision(gameInstance.player, powerUp)) {
+                    multiplier+=10;
+                    powerUp.collide(gameInstance.player);
+                    gameInstance.lifes.remove(i);
+                    i--; // Ajustar índice tras eliminación
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    private boolean checkCollision(Player player, PowerUp powerUp) {
+        return player.getX() < powerUp.getX() + powerUp.getWidth() &&
+                player.getX() + 350 > powerUp.getX() &&
+                player.getY() < powerUp.getY() + powerUp.getHeight() &&
+                player.getY() + 300 > powerUp.getY();
     }
 
     // Método para verificar colisiones
@@ -137,6 +166,11 @@ public class DoraemonGameModel  {
             }
         }
         if(randomPowerUps%10==0){
+            if(gameInstance.lifes.size()<maxPowerUps){
+                int posX = (int) (Math.random() * (maxX - 160)); // Corrección aquí
+                gameInstance.lifes.add(new PowerUp(2, 2, posX, maxY-2500));
+
+            }
 
         }
 
@@ -172,7 +206,7 @@ public class DoraemonGameModel  {
         vida = Bitmap.createScaledBitmap(vida, 100, 100, true);
 
         puntos = GamePersistance.point;
-        puntos = Bitmap.createScaledBitmap(puntos, 100, 100, true);
+        puntos = Bitmap.createScaledBitmap(puntos, 80, 80, true);
 
 
     }

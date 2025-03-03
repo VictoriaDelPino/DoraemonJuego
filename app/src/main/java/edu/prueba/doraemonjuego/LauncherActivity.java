@@ -32,7 +32,7 @@ public class LauncherActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
-        }, 1000);
+        }, 500);
 
     }
 }

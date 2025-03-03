@@ -1,5 +1,6 @@
 package edu.prueba.doraemonjuego;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,7 +81,10 @@ public class JuegoActivity extends AppCompatActivity {
                 return false;
             });
         }
+
+
     }
+
 
 
     private void hideSystemUI() {
@@ -133,5 +137,13 @@ public class JuegoActivity extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(this, LauncherActivity.class);
+        startActivity(i);
+        finish();
     }
 }

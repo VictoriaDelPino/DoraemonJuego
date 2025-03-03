@@ -87,6 +87,11 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
             for (int i = 0; i < controller.model.gameInstance.points.size(); i++) {
                 controller.model.gameInstance.points.get(i).draw(canvas);
             }
+
+            for (int i = 0; i < controller.model.gameInstance.lifes.size(); i++) {
+                controller.model.gameInstance.lifes.get(i).draw(canvas);
+            }
+
             // Mostrar FPS
             mypaint.setTextSize(60);
             mypaint.setStyle(Paint.Style.FILL);

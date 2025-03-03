@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 
 import androidx.annotation.NonNull;
 
+import edu.prueba.doraemonjuego.JuegoActivity;
 import edu.prueba.doraemonjuego.data.GameInstance;
 import edu.prueba.doraemonjuego.data.GamePersistance;
 import edu.prueba.doraemonjuego.model.DoraemonGameModel;
@@ -57,6 +58,7 @@ public class DoraemonGameController extends Thread {
         while (JuegoEnEjecucion) {
             canvas = null;
             try {
+
 
                 canvas = view.holder.lockCanvas();
                 if(canvas != null){
