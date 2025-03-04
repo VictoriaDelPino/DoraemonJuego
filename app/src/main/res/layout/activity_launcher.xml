@@ -5,17 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo_inicio"
     tools:context=".LauncherActivity">
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/fondo_inicio" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,14 +27,10 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxHeight="100dip"
-            android:minHeight="50dip"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp" />
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/textView"

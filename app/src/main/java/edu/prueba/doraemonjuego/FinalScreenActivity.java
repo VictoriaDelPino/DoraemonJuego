@@ -40,7 +40,17 @@ public class FinalScreenActivity extends AppCompatActivity {
                 }
             });
         }else{
-
+            findViewById(R.id.imgBtnInicio_gameOver).setOnClickListener(v->{
+                Intent i = new Intent(this, LauncherActivity.class);
+                startActivity(i);
+                finish();
+            });
+            findViewById(R.id.imgBtnVolverIntentar).setOnClickListener(v->{
+                    Intent i = new Intent(this, JuegoActivity.class);
+                    i.putExtra("nivel", level);
+                    startActivity(i);
+                    finish();
+            });
         }
     }
 

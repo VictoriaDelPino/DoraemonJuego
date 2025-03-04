@@ -36,9 +36,9 @@ public class Point {
     public boolean collide(Player player) throws Throwable {
         float playerL, playerR, playerT, playerB;
         float otherL, otherR, otherT, otherB;
-        playerL = player.getX();
+        playerL = player.getX()+50;
         playerR = player.getX() + player.getWidth();
-        playerT = player.getY();
+        playerT = player.getY()+50;
         playerB = player.getY() + player.getHeight();
         otherL = x;
         otherR = x + width;

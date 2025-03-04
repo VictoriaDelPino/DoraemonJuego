@@ -57,7 +57,7 @@ public class DoraemonGameModel  {
     private Context context;
 
     private float multiplier = 100f;
-    public static int MAX_PT_LVL1=10;
+    public static int MAX_PT_LVL1=100;
     public static int MAX_PT_LVL2=150;
     public static int MAX_PT_LVL3=200;
 
@@ -123,6 +123,7 @@ public class DoraemonGameModel  {
                 enemy.moveDown(multiplier);
                 if(enemy.collide(gameInstance.player)){
                     gameInstance.enemies.remove(i);
+                    multiplier+=20;
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -136,6 +137,7 @@ public class DoraemonGameModel  {
                 point.moveDown(multiplier);
                 if(point.collide(gameInstance.player)){
                     gameInstance.points.remove(i);
+                    multiplier+=10;
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -148,6 +150,8 @@ public class DoraemonGameModel  {
                 powerUp.moveDown(multiplier);
                 if(powerUp.collide(gameInstance.player)){
                     gameInstance.lifes.remove(i);
+                    multiplier+=10;
+
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
