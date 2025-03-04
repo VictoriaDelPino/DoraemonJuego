@@ -1,6 +1,7 @@
 package edu.prueba.doraemonjuego.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,6 +15,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.prueba.doraemonjuego.FinalScreenActivity;
 import edu.prueba.doraemonjuego.R;
 import edu.prueba.doraemonjuego.controller.DoraemonGameController;
 import edu.prueba.doraemonjuego.model.DoraemonGameModel;
@@ -61,8 +63,10 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
     }
 
 
-    public void renderizar(Canvas canvas) {
+    public void renderizar(Canvas canvas, DoraemonGameModel model) {
         if (canvas != null) {
+
+
             Paint mypaint = new Paint();
             canvas.drawColor(Color.RED);
 
@@ -73,12 +77,58 @@ public class DoraemonGameView extends SurfaceView implements SurfaceHolder.Callb
             // Dibujar la imagen del suelo manteniendo proporciones
             int suelo_y = controller.model.maxY - controller.model.suelo.getHeight(); // Asegurar que esté en la parte inferior
             canvas.drawBitmap(controller.model.suelo, 0, suelo_y, null);
+            model.gameInstance.player.draw(canvas);
+
+            canvas.drawBitmap(controller.model.vida, 0, 0, null);
+            canvas.drawBitmap(controller.model.puntos, controller.model.maxX-240, 0, null);
+
+            for (int i = 0; i < controller.model.gameInstance.enemies.size(); i++) {
+                controller.model.gameInstance.enemies.get(i).draw(canvas);
+            }
+
+            for (int i = 0; i < controller.model.gameInstance.points.size(); i++) {
+                controller.model.gameInstance.points.get(i).draw(canvas);
+            }
+
+            for (int i = 0; i < controller.model.gameInstance.lifes.size(); i++) {
+                controller.model.gameInstance.lifes.get(i).draw(canvas);
+            }
 
             // Mostrar FPS
-            mypaint.setTextSize(40);
+            mypaint.setTextSize(60);
+            mypaint.setStyle(Paint.Style.FILL);
+            mypaint.setColor(Color.BLACK); // Color principal del texto
+            mypaint.setAntiAlias(true);
+
+// Pintar el borde blanco
+            Paint borderPaint = new Paint(mypaint);
+            borderPaint.setStyle(Paint.Style.STROKE);
+            borderPaint.setStrokeWidth(8); // Grosor del borde
+            borderPaint.setColor(Color.WHITE); // Color del borde
+            // Dibujar el texto con borde blanco
+            canvas.drawText("X" + controller.model.gameInstance.player.getLifes(),
+                    controller.model.textoInicialx+50, controller.model.textoInicialy + 50, borderPaint);
+            canvas.drawText("X" + controller.model.gameInstance.player.getLifes(),
+                    controller.model.textoInicialx+50, controller.model.textoInicialy + 50, mypaint);
+
+            canvas.drawText("X" + controller.model.gameInstance.player.getScore(),
+                    controller.model.maxX-140, controller.model.textoInicialy +50, borderPaint);
+            canvas.drawText("X" + controller.model.gameInstance.player.getScore(),
+                    controller.model.maxX-140, controller.model.textoInicialy +50, mypaint);
+
+// Mostrar FPS con borde
             canvas.drawText("Frames ejecutados: " + controller.model.contadorFrames,
-                    controller.model.textoInicialx, controller.model.textoInicialy + 40, mypaint);
+                    controller.model.textoInicialx, controller.model.textoInicialy + 150, borderPaint);
+            canvas.drawText("Frames ejecutados: " + controller.model.contadorFrames,
+                    controller.model.textoInicialx, controller.model.textoInicialy + 150, mypaint);
         }
+    }
+
+    public void printFinalScreen(Context context, boolean isWin){
+        Intent intent = new Intent(context, FinalScreenActivity.class);
+        intent.putExtra("isWin", isWin);
+        intent.putExtra("level", controller.model.nivel);
+        context.startActivity(intent);
     }
 
     @Override

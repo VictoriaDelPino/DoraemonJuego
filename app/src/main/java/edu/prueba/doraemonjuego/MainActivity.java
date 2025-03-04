@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+
         imgLogo=findViewById(R.id.imageView);
         imgBtnNivel1 =findViewById(R.id.imgBtnNivel1);
         imgBtnNivel2 =findViewById(R.id.imgBtnNivel2);
@@ -52,18 +53,21 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(getApplicationContext(), JuegoActivity.class);
             i.putExtra("nivel", 1); // Enviar el valor 1
             startActivity(i);
+            finish();
         });
 
         imgBtnNivel2.setOnClickListener(v -> {
             Intent i = new Intent(getApplicationContext(), JuegoActivity.class);
             i.putExtra("nivel", 2); // Enviar el valor 2
             startActivity(i);
+            finish();
         });
 
         imgBtnNivel3.setOnClickListener(v -> {
             Intent i = new Intent(getApplicationContext(), JuegoActivity.class);
             i.putExtra("nivel", 3); // Enviar el valor 3
             startActivity(i);
+            finish();
         });
     }
 
