@@ -1,6 +1,7 @@
 package edu.prueba.doraemonjuego;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -12,15 +13,23 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class FinalScreenActivity extends AppCompatActivity {
 
+    private MediaPlayer musicaVictoria;
+    private MediaPlayer musicaDerrota;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         boolean isWin = getIntent().getBooleanExtra("isWin", false);
         int level = getIntent().getIntExtra("level", 1);
+        musicaVictoria = MediaPlayer.create(this, R.raw.ganar1);
+        musicaDerrota = MediaPlayer.create(this, R.raw.perder1);
         if(isWin){
             setContentView(R.layout.win_layout);
+            musicaVictoria.start();
         }else{
             setContentView(R.layout.game_over_layout);
+            musicaDerrota.start();
         }
 
         if(isWin){

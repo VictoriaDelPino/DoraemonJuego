@@ -41,6 +41,12 @@ public class DoraemonGameController extends Thread {
         }else if (nivel==3){
             divider=35;
         }
+
+        if (model.musicaFondo != null) {
+            model.musicaFondo.setLooping(true);
+            model.musicaFondo.setVolume(0.04f, 0.04f);
+            model.musicaFondo.start();
+        }
 //inicializar musica
 
     }
@@ -95,11 +101,15 @@ public class DoraemonGameController extends Thread {
             }
             model.checkGame();
         }
+
+        if (model.musicaFondo != null) {
+            model.musicaFondo.stop();
+            model.musicaFondo.release();
+            model.musicaFondo = null;
+        }
         if(model.isJuegoGanado()){
-            //para musica
             view.printFinalScreen(context, true);
-        }else{
-            //para musica
+        }else if(!model.isJuegoGanado() && model.gameInstance.player.getLifes()<=0){
             view.printFinalScreen(context, false);
         }
     }

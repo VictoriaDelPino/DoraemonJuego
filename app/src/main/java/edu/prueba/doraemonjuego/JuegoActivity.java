@@ -137,10 +137,33 @@ public class JuegoActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (controller.model.musicaFondo != null) {
+            controller.model.musicaFondo.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (controller.model.musicaFondo != null) {
+            controller.model.musicaFondo.start();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (controller.model.musicaFondo != null) {
+            controller.model.musicaFondo.stop();
+            controller.model.musicaFondo.release();
+            controller.model.musicaFondo = null;
+        }
+
         Intent i = new Intent(this, LauncherActivity.class);
         startActivity(i);
+        controller.model.setJuegoEnEjecucion(false);
         finish();
     }
 }

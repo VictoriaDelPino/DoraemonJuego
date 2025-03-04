@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import edu.prueba.doraemonjuego.R;
@@ -40,26 +41,24 @@ public class DoraemonGameModel  {
     private boolean JuegoEnEjecucion = true;
     private boolean juegoGanado=false;
 
-    public DoraemonGameController getBucle() {
-        return bucle;
-    }
+    public MediaPlayer musicaFondo;
 
-    public boolean isJuegoEnEjecucion() {
-        return JuegoEnEjecucion;
-    }
 
-    public boolean isJuegoGanado() {
-        return juegoGanado;
-    }
+    public MediaPlayer punto;
+    public MediaPlayer enemigo;
+
+
+
+
 
     public DoraemonGameController bucle;
 
     private Context context;
 
     private float multiplier = 100f;
-    public static int MAX_PT_LVL1=100;
-    public static int MAX_PT_LVL2=150;
-    public static int MAX_PT_LVL3=200;
+    public static int MAX_PT_LVL1=500;
+    public static int MAX_PT_LVL2=1000;
+    public static int MAX_PT_LVL3=2000;
 
     public DoraemonGameModel(Context context, int nivel) {
         this.context = context;
@@ -67,6 +66,9 @@ public class DoraemonGameModel  {
         velocidadMapa= 5;
         //if por nivel
 
+        musicaFondo = MediaPlayer.create(context, R.raw.musicafondo);
+        punto = MediaPlayer.create(this.context, R.raw.ganar2);
+        enemigo = MediaPlayer.create(this.context, R.raw.perder2);
 
         if(nivel==1){
             multiplier = 100f;
@@ -91,9 +93,25 @@ public class DoraemonGameModel  {
 
     }
 
+    public DoraemonGameController getBucle() {
+        return bucle;
+    }
+
+    public boolean isJuegoEnEjecucion() {
+        return JuegoEnEjecucion;
+    }
+
+    public void setJuegoEnEjecucion(boolean juegoEnEjecucion) {
+        JuegoEnEjecucion = juegoEnEjecucion;
+    }
+
+    public boolean isJuegoGanado() {
+        return juegoGanado;
+    }
+
     public void checkGame(){
 
-        Log.d("checkGame",DoraemonGameModel.MAX_PT_LVL1+" | "+nivel+" | "+gameInstance.player.getScore() );
+       // Log.d("checkGame",DoraemonGameModel.MAX_PT_LVL1+" | "+nivel+" | "+gameInstance.player.getScore() );
         if(gameInstance.player.getLifes()<=0){
             JuegoEnEjecucion=false;
             juegoGanado=false;
@@ -122,6 +140,8 @@ public class DoraemonGameModel  {
             try {
                 enemy.moveDown(multiplier);
                 if(enemy.collide(gameInstance.player)){
+
+                        enemigo.start();
                     gameInstance.enemies.remove(i);
                     multiplier+=20;
                 }
@@ -136,6 +156,8 @@ public class DoraemonGameModel  {
             try {
                 point.moveDown(multiplier);
                 if(point.collide(gameInstance.player)){
+
+                        punto.start();
                     gameInstance.points.remove(i);
                     multiplier+=10;
                 }
@@ -149,6 +171,8 @@ public class DoraemonGameModel  {
             try {
                 powerUp.moveDown(multiplier);
                 if(powerUp.collide(gameInstance.player)){
+
+                        punto.start();
                     gameInstance.lifes.remove(i);
                     multiplier+=10;
 
