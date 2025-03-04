@@ -39,7 +39,7 @@ public class Enemy {
         float playerL, playerR, playerT, playerB;
         float otherL, otherR, otherT, otherB;
         playerL = player.getX()+50;
-        playerR = player.getX() + player.getWidth();
+        playerR = player.getX() + player.getWidth()-50;
         playerT = player.getY()+50;
         playerB = player.getY() + player.getHeight();
         otherL = x;

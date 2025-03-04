@@ -100,4 +100,9 @@ public class MainActivity extends AppCompatActivity {
         animadorBton.start();
     };
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }

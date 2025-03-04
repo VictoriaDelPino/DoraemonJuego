@@ -41,8 +41,8 @@ public class PowerUp {
             float playerL, playerR, playerT, playerB;
             float otherL, otherR, otherT, otherB;
             playerL = player.getX()+50;
-            playerR = player.getX() + player.getWidth();
-            playerT = player.getY()+50;
+            playerR = player.getX() + player.getWidth()-100;
+            playerT = player.getY()+100;
             playerB = player.getY() + player.getHeight();
             otherL = x;
             otherR = x + width;
