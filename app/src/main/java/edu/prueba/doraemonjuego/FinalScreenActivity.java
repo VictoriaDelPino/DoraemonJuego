@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+//Activity de la pantalla final del juego
 public class FinalScreenActivity extends AppCompatActivity {
 
     private MediaPlayer musicaVictoria;
@@ -24,6 +21,7 @@ public class FinalScreenActivity extends AppCompatActivity {
         int level = getIntent().getIntExtra("level", 1);
         musicaVictoria = MediaPlayer.create(this, R.raw.ganar1);
         musicaDerrota = MediaPlayer.create(this, R.raw.perder1);
+        //Comprueba si ha ganado o perdido para poner distinito layout y sonido
         if(isWin){
             setContentView(R.layout.win_layout);
             musicaVictoria.start();
@@ -32,6 +30,7 @@ public class FinalScreenActivity extends AppCompatActivity {
             musicaDerrota.start();
         }
 
+        //inicializa los botones y les da su funcion dependiendo de si ha ganado o perdido
         if(isWin){
             findViewById(R.id.imgBtnInicio_win).setOnClickListener(v->{
                 Intent i = new Intent(this, LauncherActivity.class);
@@ -63,6 +62,7 @@ public class FinalScreenActivity extends AppCompatActivity {
         }
     }
 
+    //Si se supera el ultimo nivel al dar al boton de siguiente muestra un dialogo
     private void showDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Juego completado");
@@ -81,5 +81,14 @@ public class FinalScreenActivity extends AppCompatActivity {
 
         });
         builder.create().show();
+    }
+
+    //Al dar atras vuelve al menu principal
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(this, LauncherActivity.class);
+        startActivity(i);
+        finish();
     }
 }

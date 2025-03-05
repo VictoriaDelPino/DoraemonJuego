@@ -9,6 +9,7 @@ import java.util.Map;
 
 import edu.prueba.doraemonjuego.R;
 
+//clase que almacena las imagenes del juego
 public class GamePersistance {
 
     public static Bitmap enemy, point,  background, ground, life;

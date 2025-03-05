@@ -3,7 +3,6 @@ package edu.prueba.doraemonjuego.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.util.Log;
@@ -13,10 +12,10 @@ import edu.prueba.doraemonjuego.controller.DoraemonGameController;
 import edu.prueba.doraemonjuego.data.Enemy;
 import edu.prueba.doraemonjuego.data.GameInstance;
 import edu.prueba.doraemonjuego.data.GamePersistance;
-import edu.prueba.doraemonjuego.data.Player;
 import edu.prueba.doraemonjuego.data.Point;
 import edu.prueba.doraemonjuego.data.PowerUp;
 
+//clase que define el modelo del juego
 public class DoraemonGameModel  {
 
     public int maxX, maxY;
@@ -25,51 +24,38 @@ public class DoraemonGameModel  {
     public Bitmap vida;
     public Bitmap puntos;
     public int mapa_h, mapa_w, dest_mapa_y;
-
     public int nivel;
-
     public int maxEnemies, maxPoints,maxPowerUps;
     public float pos_mapa_y;  // Nueva posición para el movimiento vertical
     public float velocidadMapa; // Velocidad del movimiento
-
     public int contadorFrames = 0;
     public static final int textoInicialx = 50;
     public static final int textoInicialy = 20;
-
     public GameInstance gameInstance;
-
     private boolean JuegoEnEjecucion = true;
     private boolean juegoGanado=false;
-
     public MediaPlayer musicaFondo;
-
-
     public MediaPlayer punto;
     public MediaPlayer enemigo;
-
-
-
-
-
     public DoraemonGameController bucle;
-
     private Context context;
-
     private float multiplier = 100f;
     public static int MAX_PT_LVL1=500;
     public static int MAX_PT_LVL2=1000;
-    public static int MAX_PT_LVL3=2000;
+    public static int MAX_PT_LVL3=1500;
 
+    //Constructor
     public DoraemonGameModel(Context context, int nivel) {
         this.context = context;
         this.nivel = nivel;
-        velocidadMapa= 5;
-        //if por nivel
+        velocidadMapa= 7;
 
+        //Inicializa los mediaPlayers del juego
         musicaFondo = MediaPlayer.create(context, R.raw.musicafondo);
         punto = MediaPlayer.create(this.context, R.raw.ganar2);
         enemigo = MediaPlayer.create(this.context, R.raw.perder2);
 
+        //Inicializa los valores del juego
         if(nivel==1){
             multiplier = 100f;
             maxEnemies = 20;
@@ -109,6 +95,7 @@ public class DoraemonGameModel  {
         return juegoGanado;
     }
 
+    //Metodo que comprueba si el juego ha terminado y si es asi si ha ganado o perdido
     public void checkGame(){
 
        // Log.d("checkGame",DoraemonGameModel.MAX_PT_LVL1+" | "+nivel+" | "+gameInstance.player.getScore() );
@@ -117,15 +104,15 @@ public class DoraemonGameModel  {
             juegoGanado=false;
         }else {
             if (gameInstance.player.getScore() >= DoraemonGameModel.MAX_PT_LVL1 && nivel == 1) {
-                Log.d("checkGame", "1");
+                //Log.d("checkGame", "1");
                 JuegoEnEjecucion = false;
                 juegoGanado = true;
             } else if (gameInstance.player.getScore() >= DoraemonGameModel.MAX_PT_LVL2 && nivel == 2) {
-                Log.d("checkGame", "2");
+               // Log.d("checkGame", "2");
                 JuegoEnEjecucion = false;
                 juegoGanado = true;
             } else if (gameInstance.player.getScore() >= DoraemonGameModel.MAX_PT_LVL3 && nivel == 3) {
-                Log.d("checkGame", "3");
+               // Log.d("checkGame", "3");
                 JuegoEnEjecucion = false;
                 juegoGanado = true;
             }
@@ -133,31 +120,32 @@ public class DoraemonGameModel  {
         }
     }
 
+    //Metodo que actualiza las posiciones de los objetos
+    // aumenta el multiplicado de la velocidad cuando colisiona
+    //reproduce los sonidos de puntos y enemigos
     public void updatePositions() {
-        // Mover enemigos y verificar colisiones
+        // Mueve enemigos y verificar colisiones
         for (int i = 0; i < gameInstance.enemies.size(); i++) {
             Enemy enemy = gameInstance.enemies.get(i);
             try {
                 enemy.moveDown(multiplier);
                 if(enemy.collide(gameInstance.player)){
-
-                        enemigo.start();
+                    enemigo.start();
                     gameInstance.enemies.remove(i);
-                    multiplier+=20;
+                    multiplier+=15;
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
 
-        // Mover puntos y verificar colisiones
+        // Mueve puntos y verificar colisiones
         for (int i = 0; i < gameInstance.points.size(); i++) {
             Point point = gameInstance.points.get(i);
             try {
                 point.moveDown(multiplier);
                 if(point.collide(gameInstance.player)){
-
-                        punto.start();
+                    punto.start();
                     gameInstance.points.remove(i);
                     multiplier+=10;
                 }
@@ -171,11 +159,9 @@ public class DoraemonGameModel  {
             try {
                 powerUp.moveDown(multiplier);
                 if(powerUp.collide(gameInstance.player)){
-
-                        punto.start();
+                    punto.start();
                     gameInstance.lifes.remove(i);
-                    multiplier+=10;
-
+                    multiplier+=5;
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -184,16 +170,14 @@ public class DoraemonGameModel  {
         }
     }
 
-
-
-
+    //Metodo que instancia los objetos
     public void instantiateEntities(){
         int randomEnemies = (int) (Math.random() * maxEnemies);
         int randomPoints = (int) (Math.random() * maxPoints);
         int randomPowerUps = (int) (Math.random() * 11);
         if(randomPoints%2==0){
             if(gameInstance.points.size()<maxPoints){
-                int posX = (int) (Math.random() * (maxX - 250)); // Corrección aquí
+                int posX = (int) (Math.random() * (maxX - 250));
                 gameInstance.points.add(new Point(200, 250, posX, -250));
                 Log.d("Instanciar_entidad", "Instanciado punto");
             }
@@ -211,11 +195,10 @@ public class DoraemonGameModel  {
                 gameInstance.lifes.add(new PowerUp(225, 250, posX, -250));
 
             }
-
         }
-
     }
 
+    //Metodo que inicializa imagenes que se van a usar en el juego
     public void initializeValues(Canvas c){
 
         maxX = c.getWidth();
@@ -238,7 +221,7 @@ public class DoraemonGameModel  {
 
         // Escalar manteniendo la proporción
         float escalaSuelo = (float) maxX / suelo.getWidth();
-        int suelo_h = (int) (suelo.getHeight() * escalaSuelo);  // Ajustar altura proporcional
+        int suelo_h = (int) (suelo.getHeight() * escalaSuelo);  // Ajusta altura proporcional
 
         suelo = Bitmap.createScaledBitmap(suelo, maxX, suelo_h, true);
 

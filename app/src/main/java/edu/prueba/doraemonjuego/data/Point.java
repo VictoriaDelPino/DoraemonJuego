@@ -2,11 +2,9 @@ package edu.prueba.doraemonjuego.data;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 
+
+//clase que define los puntos
 public class Point {
 
     private float x;
@@ -23,16 +21,18 @@ public class Point {
         bitmap=GamePersistance.point;
     }
 
+    //Metodo para dibujar los puntos
     public void draw(Canvas canvas){
-
         canvas.drawBitmap(bitmap, x, y, null);
     }
 
+    //Metodo para mover los puntos
     public void moveDown(Float multiplier) throws Throwable {
         y+=0.1*multiplier;
         if(y<0) autoDestroy();
     }
 
+    //Metodo que controla las colisiones de los puntos con el jugador
     public boolean collide(Player player) throws Throwable {
         float playerL, playerR, playerT, playerB;
         float otherL, otherR, otherT, otherB;
@@ -52,6 +52,7 @@ public class Point {
         return isCollide;
     }
 
+    //Metodo para destruir los puntos
     public void autoDestroy() throws Throwable {
         finalize();
     }

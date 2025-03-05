@@ -2,14 +2,10 @@ package edu.prueba.doraemonjuego.data;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.util.Log;
 
+//clase que define los powerUps
 public class PowerUp {
-
 
         private float x;
         private float y;
@@ -25,18 +21,18 @@ public class PowerUp {
         bitmap=GamePersistance.life;
     }
 
+    //metodo para dibujar los powerUps
     public void draw(Canvas canvas){
-
         canvas.drawBitmap(bitmap, x, y, null);
-        Log.d("Instanciar_entidad", "Pintado powerUp");
     }
 
-        public void moveDown(Float multiplier) throws Throwable {
+    //metodo para mover los powerUps
+    public void moveDown(Float multiplier) throws Throwable {
         y+=0.1*multiplier;
         if(y<0) autoDestroy();
     }
 
-
+    //metodo que controla las colisiones de los powerUps con el jugador
         public boolean collide(Player player) throws Throwable {
             float playerL, playerR, playerT, playerB;
             float otherL, otherR, otherT, otherB;
@@ -59,7 +55,8 @@ public class PowerUp {
             return isCollide;
     }
 
-        public void autoDestroy() throws Throwable {
+    //metodo para destruir los powerUps
+    public void autoDestroy() throws Throwable {
         finalize();
     }
         public int getHeight() {

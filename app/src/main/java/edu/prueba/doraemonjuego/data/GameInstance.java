@@ -3,6 +3,7 @@ package edu.prueba.doraemonjuego.data;
 import java.util.ArrayList;
 import java.util.List;
 
+//instancia del juego y sus variables
 public class GameInstance {
     public Player player;
     public List<Enemy> enemies;

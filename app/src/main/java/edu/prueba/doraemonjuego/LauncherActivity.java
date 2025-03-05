@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import edu.prueba.doraemonjuego.data.GamePersistance;
 
+//Activity del launcher
 public class LauncherActivity extends AppCompatActivity {
 
     @Override
@@ -26,8 +27,10 @@ public class LauncherActivity extends AppCompatActivity {
             return insets;
         });
 
+        //Inicializa la persistencia de datos
         GamePersistance.initialize(this);
 
+        //Inicia la actividad principal despues de 500ms
         Handler handler= new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
