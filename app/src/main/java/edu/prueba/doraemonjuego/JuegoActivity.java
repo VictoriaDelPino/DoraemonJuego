@@ -15,10 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.prueba.doraemonjuego.controller.DoraemonGameController;
 
-/**
- * Clase que maneja la actividad del juego.
- * Controla la vista, gestos y eventos táctiles para mover al personaje.
- */
+//Clase que maneja la actividad del juego.
+
 public class JuegoActivity extends AppCompatActivity {
 
     private DoraemonGameController controller;
@@ -30,8 +28,9 @@ public class JuegoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int nivel = getIntent().getIntExtra("nivel", 1); // Obtener nivel del intent
+        int nivel = getIntent().getIntExtra("nivel", 1); // Obtiene nivel del intent
 
+        // Crea el controlador del juego
         controller = new DoraemonGameController(this, nivel);
 
         if (controller.view != null) {
@@ -39,32 +38,37 @@ public class JuegoActivity extends AppCompatActivity {
             hideSystemUI();
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+            // Inicia el juego después de 1 segundo
             Handler handler = new Handler(Looper.getMainLooper());
             handler.postDelayed(() -> controller.start(), 1000);
-
             movementHandler = new Handler(Looper.getMainLooper());
 
-
+            // Configura el detector de gestos
             gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+                // Maneja el gesto de toque
                 @Override
                 public boolean onSingleTapConfirmed(@NonNull MotionEvent e) {
                     handlePlayerMovement(e);
                     return true;
                 }
-
+                // Maneja el gesto de pulsación larga
                 @Override
                 public void onLongPress(@NonNull MotionEvent e) {
                     startContinuousMovement(e);
                 }
             });
 
+            // Configura el detector de gestos para la vista
             controller.view.setOnTouchListener((v, event) -> {
                 switch (event.getAction()) {
+
+                    // Maneja los eventos de toque
                     case MotionEvent.ACTION_DOWN:
                         isTouching = true;
                         startContinuousMovement(event);
                         return true;
 
+                    // Maneja los eventos de movimiento
                     case MotionEvent.ACTION_MOVE:
                         if (!isTouching) {
                             isTouching = true;
@@ -72,6 +76,7 @@ public class JuegoActivity extends AppCompatActivity {
                         }
                         return true;
 
+                    // Maneja los eventos de soltado
                     case MotionEvent.ACTION_UP:
                         isTouching = false;
                         stopContinuousMovement();
@@ -83,7 +88,7 @@ public class JuegoActivity extends AppCompatActivity {
     }
 
 
-
+    // Oculta la barra de notificaciones
     private void hideSystemUI() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
             controller.view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -97,7 +102,7 @@ public class JuegoActivity extends AppCompatActivity {
         }
     }
 
-
+    // Maneja el movimiento del jugador
     private void handlePlayerMovement(MotionEvent e) {
         int actualX = (int) e.getX();
         if (actualX < controller.model.maxX / 2) {
@@ -108,9 +113,9 @@ public class JuegoActivity extends AppCompatActivity {
     }
 
 
+    //Mueve el jugador de forma continua
     private void startContinuousMovement(MotionEvent e) {
         stopContinuousMovement();
-
         movementRunnable = new Runnable() {
             @Override
             public void run() {
@@ -124,34 +129,38 @@ public class JuegoActivity extends AppCompatActivity {
         movementHandler.post(movementRunnable);
     }
 
-
+    //Maneja la parada del movimiento
     private void stopContinuousMovement() {
         if (movementRunnable != null) {
             movementHandler.removeCallbacks(movementRunnable);
         }
     }
 
+    //Maneja la deteccion de gestos de toque de la pantalla
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
     }
 
+    //Al pausar la activida vuelve al menu principal
     @Override
     protected void onPause() {
         super.onPause();
-        if (controller.model.musicaFondo != null) {
-            controller.model.musicaFondo.pause();
+        if(controller.model.isJuegoEnEjecucion()) {
+            if (controller.model.musicaFondo != null) {
+                controller.model.musicaFondo.stop();
+                controller.model.musicaFondo.release();
+                controller.model.musicaFondo = null;
+            }
+
+            Intent i = new Intent(this, LauncherActivity.class);
+            startActivity(i);
+            controller.model.setJuegoEnEjecucion(false);
+            finish();
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (controller.model.musicaFondo != null) {
-            controller.model.musicaFondo.start();
-        }
-    }
-
+    //Al dar atras vuelve al menu principal
     @Override
     public void onBackPressed() {
         super.onBackPressed();

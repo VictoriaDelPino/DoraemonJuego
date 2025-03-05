@@ -6,15 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-
-import androidx.annotation.NonNull;
-
-import edu.prueba.doraemonjuego.JuegoActivity;
-import edu.prueba.doraemonjuego.data.GameInstance;
-import edu.prueba.doraemonjuego.data.GamePersistance;
 import edu.prueba.doraemonjuego.model.DoraemonGameModel;
 import edu.prueba.doraemonjuego.view.DoraemonGameView;
 
@@ -29,26 +20,27 @@ public class DoraemonGameController extends Thread {
     Context context;
     private int divider;
 
-
+    //Constructor
     public DoraemonGameController(Context context, int nivel) {
         this.context = context;
+        //Inicializa el modelo y la vista
         model= new DoraemonGameModel(context, nivel);
         view= new DoraemonGameView(context, this);
+        //inicializa la probavilidad de instaciar objetosinicial dependiendo del nivel
         if (nivel==1){
             divider=100;
         }else if (nivel==2){
-            divider=75;
+            divider=65;
         }else if (nivel==3){
-            divider=35;
+            divider=25;
         }
 
+        //inicia el bucle de la musica de fondo
         if (model.musicaFondo != null) {
             model.musicaFondo.setLooping(true);
             model.musicaFondo.setVolume(0.04f, 0.04f);
             model.musicaFondo.start();
         }
-//inicializar musica
-
     }
 
     @SuppressLint("RestrictedApi")
@@ -61,17 +53,20 @@ public class DoraemonGameController extends Thread {
         int framesASaltar;
 
 
+        //comienza el bucle del juego
         while (model.isJuegoEnEjecucion()) {
             canvas = null;
             try {
 
-
+                //instancia los objetos que caen
                 canvas = view.holder.lockCanvas();
                 if(canvas != null){
                     if(model.contadorFrames%divider==0){
                         model.instantiateEntities();
                     }
                 }
+
+                //sincroniza el canva
                 synchronized (view.holder) {
                     tiempoComienzo = System.currentTimeMillis();
                     framesASaltar = 0;
@@ -99,14 +94,17 @@ public class DoraemonGameController extends Thread {
                     view.holder.unlockCanvasAndPost(canvas);
                 }
             }
+            //comprueba si el juego ha terminado
             model.checkGame();
         }
 
+        //apaga el bucle de la musica de fondo
         if (model.musicaFondo != null) {
             model.musicaFondo.stop();
             model.musicaFondo.release();
             model.musicaFondo = null;
         }
+        // comprueba si se ha ganado o perdido
         if(model.isJuegoGanado()){
             view.printFinalScreen(context, true);
         }else if(!model.isJuegoGanado() && model.gameInstance.player.getLifes()<=0){
