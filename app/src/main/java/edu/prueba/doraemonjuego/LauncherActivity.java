@@ -1,8 +1,9 @@
-package edu.prueba.doraemonjuego.view;
+package edu.prueba.doraemonjuego;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageButton;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,25 +11,31 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+import edu.prueba.doraemonjuego.data.GamePersistance;
 
-    private ImageButton imgBtbAcceder;
+//Activity del launcher
+public class LauncherActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_launcher);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        imgBtbAcceder=findViewById(R.id.imbBtnAcceder);
+        //Inicializa la persistencia de datos
+        GamePersistance.initialize(this);
 
-        imgBtbAcceder.setOnClickListener(v->{
-            Intent i= new Intent(getApplicationContext(),JuegoActivity.class);
-            startActivity(i);
-        });
+        //Inicia la actividad principal despues de 500ms
+        Handler handler= new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }, 500);
+
     }
 }
